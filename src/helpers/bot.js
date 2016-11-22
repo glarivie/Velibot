@@ -3,6 +3,8 @@ import { log } from 'console';
 import { Client } from 'recastai';
 import _ from 'lodash';
 
+import { getClosestStation } from './velib';
+
 const { RECAST_TOKEN, APP_LANG } = process.env;
 const client = new Client(RECAST_TOKEN, APP_LANG);
 
@@ -13,10 +15,10 @@ const handleMessage = async ({ sender, message }) => {
         conversationToken: sender.id,
       })
       .then(async response => {
-        log(response);
-        const { replies, action } = response;
+        const { reply, replies, action, memory } = response;
+        log(replies, action, memory);
 
-        if (!response.reply()) {
+        if (!reply()) {
           await replyButton(sender.id, {
             messageText: null,
             buttonTitle: 'My first button',    /* Option of your button. */
@@ -25,12 +27,17 @@ const handleMessage = async ({ sender, message }) => {
             elementsTitle: 'I don\'t get it :(',
           });
         } else {
-          if (_.get(action, 'done', false))
-            log('Action is done !');
+          if (action && action.done && !_.isNil(_.get(memory, 'adresse'))) {
+            const station = await getClosestStation(memory.adresse.formatted);
 
-          await Promise.all(replies.map(async rep =>
-            await replyMessage(sender.id, rep)
-          ));
+            await replyMessage(sender.id, `La station la plus proche se trouve au ${station.address}`);
+            await replyMessage(sender.id, `Elle est à environ ${station.distance} km d'ici`);
+          }
+
+          // await Promise.all(replies.map(async rep =>
+          //   await replyMessage(sender.id, rep)
+          // ));
+          await replyMessage(sender.id, replies[0]);
         }
       })
       .catch(err => {
