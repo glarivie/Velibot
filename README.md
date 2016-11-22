@@ -3,7 +3,7 @@ Trouver le vélib le plus proche de vous !
 
 ### Demo
 
-[demo Velibot](https://raw.githubusercontent.com/hqro/Velibot/master/demo/demo.png)
+![demo Velibot](https://raw.githubusercontent.com/hqro/Velibot/master/demo/demo.png)
 
 ### Sources
 
