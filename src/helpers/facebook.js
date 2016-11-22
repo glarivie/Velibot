@@ -1,28 +1,24 @@
 import axios from 'axios';
 import qs from 'query-string';
 import { log } from 'console';
-// import _ from 'lodash';
+import _ from 'lodash';
 
 // Call to facebbok to send the message
-
 const sendMessage = async payload => {
   const { PAGE_ACCESS_TOKEN } = process.env;
   const url = 'https://graph.facebook.com/v2.6/me/messages';
   const token = qs.stringify({ access_token: PAGE_ACCESS_TOKEN });
 
-  const response = await axios.post(`${url}?${token}`, payload);
+  const { status } = await axios.post(`${url}?${token}`, payload);
 
-  log(response);
-
-  if (!response)
-    throw new Error('Fail to send Facebook message');
-  else
+  if (_.isEqual(status, 200))
     log('All good job is done');
+  else
+    throw new Error('Fail to send Facebook message');
 };
 
 
 // Type of message to send back
-
 const replyMessage = async (id, text) => {
   await sendMessage({ recipient: { id }, message: { text } });
 };
