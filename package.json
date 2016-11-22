@@ -1,7 +1,7 @@
 {
-  "name": "express-nodemon-babel-starting-boilerplate",
+  "name": "velibot",
   "version": "1.0.0",
-  "description": "Starting point for a new Nodejs Restful Api",
+  "description": "ask for a velib",
   "main": "index.js",
   "private": false,
   "engines": {
@@ -14,14 +14,14 @@
     "clean": "rm -rf build && mkdir build",
     "build-server": "babel -d ./build ./src -s",
     "build": "npm run clean && npm run build-server",
-    "start": "NODE_ENV=development nodemon --exec 'npm run lint && babel-node ./src/index.js' | bunyan",
+    "start": "NODE_ENV=development nodemon --exec 'babel-node ./src/index.js' | bunyan",
     "debug": "NODE_ENV=development nodemon --exec 'npm run lint && npm run build && node --debug ./build/index.js'",
     "lint": "eslint -c .eslintrc src",
     "force": "kill -9 $(lsof -i tcp:5000 | sed -n 2p | awk -F ' ' '{print $2}')"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hqro/Express-Nodemon-Babel-ES6-ES7-Restful-Api-Boilerplate.git"
+    "url": "git+https://github.com/hqro/Velibot"
   },
   "keywords": [
     "nodemon",
@@ -33,9 +33,9 @@
   "author": "Guillaume L. <glarivie@student.42.fr>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/hqro/Express-Nodemon-Babel-ES6-ES7-Restful-Api-Boilerplate/issues"
+    "url": "https://github.com/hqro/Velibot/issues"
   },
-  "homepage": "https://github.com/hqro/Express-Nodemon-Babel-ES6-ES7-Restful-Api-Boilerplate#readme",
+  "homepage": "https://github.com/hqro/Velibot#readme",
   "dependencies": {
     "axios": "^0.15.2",
     "body-parser": "^1.15.2",
