@@ -1,5 +1,5 @@
 import { replyMessage } from './facebook';
-import { log } from 'console';
+// import { log } from 'console';
 import { Client } from 'recastai';
 import _ from 'lodash';
 
@@ -26,6 +26,7 @@ const handleMessage = async ( senderId, message, conversation, type ) => {
       await replyMessage(senderId, replies[0], conversation, type);
     })
     .catch(err => {
+      console.log(err);
       throw new Error('Client textConverse fail', err);
     });
 };

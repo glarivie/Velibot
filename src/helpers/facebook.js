@@ -4,8 +4,8 @@ import { log } from 'console';
 import _ from 'lodash';
 
 const request = axios.create({
-  baseURL: 'https://api-botconnector.recast.ai',
-  timeout: 1000,
+  baseURL: 'https://52d01999.ngrok.io',
+  timeout: 3000,
   headers: {
     Authorization: process.env.AUTH_TOKEN,
   },
@@ -13,7 +13,7 @@ const request = axios.create({
 
 // Call to facebbok to send the message
 const sendMessage = async (payload, conversation) => {
-  const url = `/users/hqro/bots/589087088058d1537595c16e/conversations/${conversation}/messages`;
+  const url = `/users/glarivie2/bots/5890a882c12ea92ce70f2799/conversations/${conversation}/messages`;
   const { status } = await request.post(url, payload);
 
   if (_.isEqual(status, 200) || _.isEqual(status, 201))
