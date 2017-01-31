@@ -28,21 +28,14 @@ const validateWebhook = (req, res) => {
 
 const analyseMessage = async (req, res) => {
   try {
-    const object = _.get(req.body, 'object');
-    const entry = _.get(req.body, 'entry');
+    const { message, senderId } = req.body;
+    const { conversation, attachment } = message;
+    const { content, type } = attachment;
 
-    if (_.isNil(object) || !_.isEqual(object, 'page'))
-      throw new Error('[analyseMessage] Object is not page');
-    if (_.isNil(entry))
-      throw new Error('[analyseMessage] Entry is missing.');
+    if (_.isUndefined(content))
+      throw new Error('[analyseMessage] Empty content.');
 
-    entry.forEach(async ({ messaging }) => {
-      messaging.forEach(async ({ sender, message }) => {
-        if (!_.has(message, 'is_echo')) {
-          await handleMessage({ sender, message });
-        }
-      });
-    });
+    await handleMessage(senderId, content, conversation, type);
 
     return res.sendStatus(200);
   } catch (error) {

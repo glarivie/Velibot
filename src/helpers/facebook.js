@@ -1,17 +1,22 @@
 import axios from 'axios';
-import qs from 'query-string';
+// import qs from 'querystring';
 import { log } from 'console';
 import _ from 'lodash';
 
+const request = axios.create({
+  baseURL: 'https://api-botconnector.recast.ai',
+  timeout: 1000,
+  headers: {
+    Authorization: process.env.AUTH_TOKEN,
+  },
+});
+
 // Call to facebbok to send the message
-const sendMessage = async payload => {
-  const { PAGE_ACCESS_TOKEN } = process.env;
-  const url = 'https://graph.facebook.com/v2.6/me/messages';
-  const token = qs.stringify({ access_token: PAGE_ACCESS_TOKEN });
+const sendMessage = async (payload, conversation) => {
+  const url = `/users/hqro/bots/589087088058d1537595c16e/conversations/${conversation}/messages`;
+  const { status } = await request.post(url, payload);
 
-  const { status } = await axios.post(`${url}?${token}`, payload);
-
-  if (_.isEqual(status, 200))
+  if (_.isEqual(status, 200) || _.isEqual(status, 201))
     log('All good job is done');
   else
     throw new Error('Fail to send Facebook message');
@@ -19,8 +24,12 @@ const sendMessage = async payload => {
 
 
 // Type of message to send back
-const replyMessage = async (id, text) => {
-  await sendMessage({ recipient: { id }, message: { text } });
+const replyMessage = async (senderId, content, conversation, type = 'text') => {
+  await sendMessage({
+      messages: [{ type, content }],
+      senderId,
+    }, conversation,
+  );
 };
 
 const replyButton = async (id, option) => {
@@ -50,4 +59,5 @@ const replyButton = async (id, option) => {
 export {
   replyMessage,
   replyButton,
+  sendMessage,
 };
