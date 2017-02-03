@@ -15,6 +15,7 @@
     "build-server": "babel -d ./build ./src -s",
     "build": "npm run clean && npm run build-server",
     "start": "NODE_ENV=development nodemon --exec 'babel-node ./src/index.js' | bunyan",
+    "bot": "NODE_ENV=development nodemon --exec 'babel-node ./src/test.js' | bunyan",
     "debug": "NODE_ENV=development nodemon --exec 'npm run lint && npm run build && node --debug ./build/index.js'",
     "lint": "eslint -c .eslintrc src",
     "force": "kill -9 $(lsof -i tcp:5000 | sed -n 2p | awk -F ' ' '{print $2}')"
