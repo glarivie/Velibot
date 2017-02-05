@@ -1,11 +1,7 @@
-import 'dotenv/config';
-import './config/express';
-import { initTelegram } from './config/telegram';
-
-(async () => {
-  await initTelegram();
-})();
+import 'babel-polyfill'
+import 'dotenv/config'
+import './config/express'
 
 process.on('uncaughtException', error => {
-  throw new Error(error, 'Uncaught exception');
-});
+  throw new Error(error, 'Uncaught exception')
+})

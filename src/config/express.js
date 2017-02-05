@@ -1,38 +1,40 @@
-import cors from 'cors';
-import express from 'express';
-import morgan from 'morgan';
-import cookieParser from 'cookie-parser';
-import bodyParser from 'body-parser';
-import { log, error } from 'console';
-import router from '../routes/main';
+import cors from 'cors'
+import express from 'express'
+import morgan from 'morgan'
+import cookieParser from 'cookie-parser'
+import bodyParser from 'body-parser'
+import { log, error } from 'console'
+import router from '../routes/main'
 
-const app = express();
+const app = express()
+const { SERVER_PORT } = process.env
 
-app.use(morgan('dev'));
-app.use(cookieParser());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(morgan('dev'))
+app.use(cookieParser())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // enable CORS - Cross Origin Resource Sharing
-app.use(cors());
+app.use(cors())
 
 // disable 'X-Powered-By' header in response
-app.disable('x-powered-by');
+app.disable('x-powered-by')
 
 // Remove No Cache Control
-app.disable('etag');
+app.disable('etag')
 
 // Routes
-app.use('/', router);
+app.use('/', router)
 
 // Error handler
 app.use((err, req, res, next) => {
-  if (res.headersSent)
-    return next(err);
-  error(err, 'Handled error');
-  return res.status(500).send(error.message);
-});
+  if (res.headersSent) {
+    return next(err)
+  }
+  error(err, 'Handled error')
+  return res.status(500).send(error.message)
+})
 
-app.listen(process.env.SERVER_PORT, () => {
-  log(`Vélibot is running on ${process.env.SERVER_PORT}`);
-});
+app.listen(SERVER_PORT, () =>
+  log(`Vélibot is running on ${SERVER_PORT}`)
+)

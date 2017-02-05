@@ -1,12 +1,12 @@
-import axios from 'axios';
-import _ from 'lodash';
+import axios from 'axios'
+import _ from 'lodash'
 
-import { getDistance, getCoordinates } from './location';
+import { getDistance, getCoordinates } from './location'
 
 const getStationsData = async () => {
-  const url = 'http://opendata.paris.fr/explore/dataset/stations-velib-disponibilites-en-temps-reel/download?format=json';
+  const url = 'http://opendata.paris.fr/explore/dataset/stations-velib-disponibilites-en-temps-reel/download?format=json'
 
-  const { data } = await axios.get(url);
+  const { data } = await axios.get(url)
 
   const stations = data
     .filter(({ fields }) => _.isEqual(fields.status, 'OPEN'))
@@ -19,17 +19,17 @@ const getStationsData = async () => {
         lat: station.fields.position[0],
         lng: station.fields.position[1],
       },
-    }));
+    }))
 
-  return stations;
-};
+  return stations
+}
 
 const getClosestStation = async address => {
-  const coordinates = await getCoordinates(address);
-  const stations = await getStationsData();
+  const coordinates = await getCoordinates(address)
+  const stations = await getStationsData()
 
   if (!coordinates || !stations)
-    throw new Error('Cannot get the closest station');
+    throw new Error('Cannot get the closest station')
 
   const stationsWithDistance = stations
     .map(station => ({
@@ -42,12 +42,12 @@ const getClosestStation = async address => {
       ),
     }))
     .filter(({ bikes }) => bikes > 0)
-    .sort((a, b) => a.distance - b.distance);
+    .sort((a, b) => a.distance - b.distance)
 
-  return stationsWithDistance[0];
-};
+  return stationsWithDistance[0]
+}
 
 export {
   getStationsData,
   getClosestStation,
-};
+}

@@ -1,23 +1,25 @@
-import express from 'express';
-import { validateWebhook, analyseMessage } from '../controllers/webhook';
-import { receiveMessage } from '../controllers/telegram';
+import express from 'express'
+import { validateWebhook, analyseMessage } from '../controllers/webhook'
+import { receiveMessage } from '../controllers/telegram'
+import { sendHelloWorld } from '../controllers/botConnector'
 
-// import { testCoord, testVelib } from '../controllers/location';
-
-const router = express.Router();
+const router = express.Router()
 
 // Facebook Messenger routes
-router.get('/webhook', validateWebhook);
-router.post('/webhook', analyseMessage);
+router.get('/webhook', validateWebhook)
+router.post('/webhook', analyseMessage)
 
 // Telegram routes
-router.post('/telegram', receiveMessage);
+router.post('/telegram', receiveMessage)
 
-// router.get('/coord/:origin/:destination', testCoord);
-// router.get('/velib/:address', testVelib);
+// Bot-connector test router
+router.post('/bot', sendHelloWorld)
+
+// router.get('/coord/:origin/:destination', testCoord)
+// router.get('/velib/:address', testVelib)
 
 router.get('*', (req, res) => {
-  res.send('It seems to work fine :)');
-});
+  res.send('It seems to work fine :)')
+})
 
-export default router;
+export default router

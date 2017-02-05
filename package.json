@@ -1,7 +1,7 @@
 {
   "name": "velibot",
-  "version": "1.0.0",
-  "description": "ask for a velib",
+  "version": "2.0.0",
+  "description": "Ask for a velib",
   "main": "index.js",
   "private": false,
   "engines": {
@@ -9,36 +9,31 @@
     "npm": ">=3"
   },
   "scripts": {
-    "start-prod": "NODE_ENV=production npm run prod",
-    "prod": "node ./build/index.js",
-    "clean": "rm -rf build && mkdir build",
-    "build-server": "babel -d ./build ./src -s",
-    "build": "npm run clean && npm run build-server",
-    "start": "NODE_ENV=development nodemon --exec 'babel-node ./src/index.js' | bunyan",
-    "bot": "NODE_ENV=development nodemon --exec 'babel-node ./src/test.js' | bunyan",
+    "production": "NODE_ENV=production node ./build/index.js",
+    "build": "rm -rf build && mkdir build && babel -d ./build ./src -s",
+    "start": "NODE_ENV=development backpack",
     "debug": "NODE_ENV=development nodemon --exec 'npm run lint && npm run build && node --debug ./build/index.js'",
-    "lint": "eslint -c .eslintrc src",
-    "force": "kill -9 $(lsof -i tcp:5000 | sed -n 2p | awk -F ' ' '{print $2}')"
+    "lint": "eslint -c .eslintrc src"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hqro/Velibot"
   },
   "keywords": [
-    "nodemon",
+    "backpack-core",
     "express",
     "babel",
-    "es6",
-    "es7"
+    "es6+"
   ],
-  "author": "Guillaume L. <glarivie@student.42.fr>",
-  "license": "ISC",
+  "author": "Guillaume L. <guillaume@recast.ai>",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/hqro/Velibot/issues"
   },
   "homepage": "https://github.com/hqro/Velibot#readme",
   "dependencies": {
     "axios": "^0.15.2",
+    "backpack-core": "0.0.7",
     "body-parser": "^1.15.2",
     "cookie-parser": "^1.4.3",
     "cors": "^2.7.1",
@@ -50,12 +45,14 @@
     "recastai": "^2.3.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.11.4",
+    "babel-cli": "^6.22.2",
     "babel-core": "^6.11.4",
     "babel-eslint": "^6.1.2",
-    "babel-plugin-transform-class-properties": "^6.11.5",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.11.5",
-    "babel-preset-stage-2": "^6.11.0",
+    "babel-plugin-transform-class-properties": "^6.22.0",
+    "babel-plugin-transform-export-extensions": "^6.22.0",
+    "babel-polyfill": "^6.22.0",
+    "babel-preset-latest": "^6.22.0",
+    "babel-preset-stage-3": "^6.22.0",
     "bunyan": "^1.8.1",
     "eslint": "^3.2.2",
     "eslint-config-airbnb-base": "^5.0.1",
