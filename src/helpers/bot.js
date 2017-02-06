@@ -1,34 +1,33 @@
-import { replyMessage } from './facebook'
-// import { log } from 'console'
 import { Client } from 'recastai'
+import convert from 'convert-units'
 import _ from 'lodash'
 
 import { getClosestStation } from './velib'
+import { reply } from './botConnector'
 
 const { RECAST_TOKEN, APP_LANG } = process.env
 const client = new Client(RECAST_TOKEN, APP_LANG)
 
-const handleMessage = async ( senderId, message, conversation, type ) => {
+const handleMessage = async (senderId, { conversation, attachment: { content, type } }) => {
   client
-    .textConverse(message, {
-      conversationToken: senderId,
-    })
-    .then(async response => {
-      const { replies, action, memory } = response
-      // log(replies, action, memory)
+    .textConverse(content, { conversationToken: senderId })
+    .then(async ({ replies, action, memory }) => {
+      if (action && action.done && memory.address) {
+        const { address, distance } = await getClosestStation(memory.address.formatted)
+        const unit = distance.toString().length > 3 ? 'km' : 'm'
+        const converted = _.isEqual(unit, 'km') ? convert(distance).from('m').to('km').toFixed(2) : distance
 
-      if (action && action.done && !_.isNil(_.get(memory, 'adresse'))) {
-        const station = await getClosestStation(memory.adresse.formatted)
-
-        await replyMessage(senderId, `La station la plus proche se trouve au ${station.address}`, conversation)
-        await replyMessage(senderId, `Elle est à environ ${station.distance} km d'ici`, conversation)
+        await reply(senderId, `La station la plus proche se trouve au ${address}`, conversation)
+        await reply(senderId, `Elle est à environ ${converted} ${unit} d'ici`, conversation)
+      } else {
+        await reply(senderId, replies[0], conversation, type)
       }
-      await replyMessage(senderId, replies[0], conversation, type)
     })
     .catch(err => {
-      console.log(err)
       throw new Error('Client textConverse fail', err)
     })
 }
 
-export default handleMessage
+export {
+  handleMessage,
+}

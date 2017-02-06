@@ -1,19 +1,10 @@
 import express from 'express'
-import { validateWebhook, analyseMessage } from '../controllers/webhook'
-import { receiveMessage } from '../controllers/telegram'
-import { sendHelloWorld } from '../controllers/botConnector'
+import { analyseMessage } from '../controllers/webhook'
 
 const router = express.Router()
 
-// Facebook Messenger routes
-router.get('/webhook', validateWebhook)
-router.post('/webhook', analyseMessage)
-
-// Telegram routes
-router.post('/telegram', receiveMessage)
-
 // Bot-connector test router
-router.post('/bot', sendHelloWorld)
+router.post('/bot', analyseMessage)
 
 // router.get('/coord/:origin/:destination', testCoord)
 // router.get('/velib/:address', testVelib)

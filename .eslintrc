@@ -11,6 +11,8 @@
     "import/no-extraneous-dependencies": 0,
     "new-cap": 0,
     "semi": 0,
-    "curly": 0
+    "curly": 0,
+    "max-len": 0,
+    "no-mixed-operators": 0
   }
 }

@@ -44,6 +44,8 @@ const getClosestStation = async address => {
     .filter(({ bikes }) => bikes > 0)
     .sort((a, b) => a.distance - b.distance)
 
+  console.log(stationsWithDistance[0])
+
   return stationsWithDistance[0]
 }
 
