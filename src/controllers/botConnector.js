@@ -5,7 +5,6 @@ const { BC_USER, BOT_ID, AUTH_TOKEN } = process.env
 
 const axios = require('axios').create({
   baseURL: `https://52d01999.ngrok.io/users/${BC_USER}/bots/${BOT_ID}`,
-  timeout: 3000,
   headers: { Authorization: AUTH_TOKEN },
 })
 
@@ -23,12 +22,14 @@ const sendHelloWorld = async (req, res) => {
       messages, senderId,
     })
 
+    log('STATUS', status)
+
     if (status !== 200 && status !== 201) {
       res.status(parseInt(status, 10)).send('Message sending failed')
       throw new Error('Message sending failed')
     }
 
-    res.status(201).send('Message sent successfully')
+    res.status(200).send('Message sent successfully')
   } catch (err) {
     error(err)
   }
